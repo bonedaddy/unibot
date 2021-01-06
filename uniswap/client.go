@@ -22,7 +22,7 @@ import (
 	"math/big"
 	"time"
 
-	uniswapv2pair "github.com/bonedaddy/go-indexed/bindings/uniswapv2/pair"
+	uniswapv2pair "github.com/bonedaddy/unibot/bindings/uniswapv2/pair"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"

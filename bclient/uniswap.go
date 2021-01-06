@@ -5,25 +5,9 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/bonedaddy/go-indexed/uniswap"
-	"github.com/bonedaddy/go-indexed/utils"
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/bonedaddy/unibot/uniswap"
+	"github.com/bonedaddy/unibot/utils"
 )
-
-// NdxEthPairAddress returns the UniswapV2 pair of NDX-ETH
-func (c *Client) NdxEthPairAddress() common.Address {
-	return uniswap.GeneratePairAddress(NDXTokenAddress, WETHTokenAddress)
-}
-
-// Defi5EthPairAddress returns the UniswapV2 pair of DEFI5-ETH
-func (c *Client) Defi5EthPairAddress() common.Address {
-	return uniswap.GeneratePairAddress(DEFI5TokenAddress, WETHTokenAddress)
-}
-
-// Cc10EthPairAddress returns the UniswapV2 pair of CC10-ETH
-func (c *Client) Cc10EthPairAddress() common.Address {
-	return uniswap.GeneratePairAddress(CC10TokenAddress, WETHTokenAddress)
-}
 
 // NdxDaiPrice returns the price of NDX in terms of DAI
 func (c *Client) NdxDaiPrice() (float64, error) {

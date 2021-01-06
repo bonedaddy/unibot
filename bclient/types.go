@@ -1,7 +1,7 @@
 package bclient
 
 import (
-	poolbindings "github.com/bonedaddy/go-indexed/bindings/pool"
+	poolbindings "github.com/bonedaddy/unibot/bindings/pool"
 	"github.com/ethereum/go-ethereum/common"
 )
 
