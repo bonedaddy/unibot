@@ -11,28 +11,29 @@ import (
 // Price is a given price entry for an asset
 type Price struct {
 	gorm.Model
-	Type     string `gorm:"varchar(255)"`
+	Token0   string
+	Token1   string
 	USDPrice float64
 }
 
 // RecordPrice records the given asset price in the database
-func (d *Database) RecordPrice(asset string, price float64) error {
-	return d.db.Create(&Price{Type: asset, USDPrice: price}).Error
+func (d *Database) RecordPrice(token0 string, token1 string, price float64) error {
+	return d.db.Create(&Price{Token0: token0, Token1: token1, USDPrice: price}).Error
 }
 
 // LastPrice returns the last recorded price
-func (d *Database) LastPrice(asset string) (float64, error) {
+func (d *Database) LastPrice(token0, token1 string) (float64, error) {
 	var price Price
-	if err := d.db.Model(&Price{}).Where("type = ?", asset).Last(&price).Error; err != nil {
+	if err := d.db.Model(&Price{}).Where("token0 = ? AND token1 = ?", token0, token1).Last(&price).Error; err != nil {
 		return 0, err
 	}
 	return price.USDPrice, nil
 }
 
 // GetAllPrices returns all price entries for a given asset
-func (d *Database) GetAllPrices(asset string) ([]*Price, error) {
+func (d *Database) GetAllPrices(token0, token1 string) ([]*Price, error) {
 	var prices []*Price
-	return prices, d.db.Model(&Price{}).Where("type = ?", asset).Find(&prices).Error
+	return prices, d.db.Model(&Price{}).Where("token0 = ? AND token1 = ?", token0, token1).Find(&prices).Error
 }
 
 // PriceAvgInRange returns the average price of the given asset during the last N days

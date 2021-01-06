@@ -33,8 +33,6 @@ func TestBClient(t *testing.T) {
 		_, err := client.CurrentBlock()
 		require.NoError(t, err)
 		require.NotNil(t, client.Uniswap())
-		require.Equal(t, "Maker", guessTokenName("0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2"))
-		require.Equal(t, "MKR", guessTokenSymbol("0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2"))
 	})
 
 }

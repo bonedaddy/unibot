@@ -1,2 +1,2 @@
-// Package bclient provides a blockchain client for indexed finance
+// Package bclient provides a blockchain client for interacting with uniswap
 package bclient

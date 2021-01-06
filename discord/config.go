@@ -4,13 +4,12 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/bonedaddy/unibot/bclient"
 	"gopkg.in/yaml.v2"
 )
 
 // Config bundles together discord configuration information
 type Config struct {
-	// the token used by the main bot (NDXBot)
-	MainDiscordToken string `yaml:"main_discord_token"`
 	// if nil we dont use infura and connect directly to the rpc node below
 	InfuraAPIKey    string    `yaml:"infura_api_key"`
 	InfuraWSEnabled bool      `yaml:"infura_ws_enabled"`
@@ -34,19 +33,20 @@ type Database struct {
 // Watcher is used to start a process that watches the price of a token
 // and posts its value as a name
 type Watcher struct {
-	DiscordToken string `yaml:"discord_token"`
-	Currency     string `yaml:"currency"`
+	DiscordToken  string `yaml:"discord_token"`
+	Token0Address string `yaml:"token0_address"`
+	Token1Address string `yaml:"token1_address"`
+	Pair          string `yaml:"pair"`
 }
 
 var (
 	// ExampleConfig is primarily used to provide a template for generating the config file
 	ExampleConfig = &Config{
-		MainDiscordToken: "CHANGEME-MAIN",
-		InfuraAPIKey:     "INFURA-KEY",
-		InfuraWSEnabled:  false,
-		ETHRPCEndpoint:   "http://localhost:8545",
+		InfuraAPIKey:    "INFURA-KEY",
+		InfuraWSEnabled: false,
+		ETHRPCEndpoint:  "http://localhost:8545",
 		Watchers: []Watcher{
-			{DiscordToken: "CHANGEME-TOKEN", Currency: "CHANGEME-CURRENCY"},
+			{DiscordToken: "CHANGEME-TOKEN", Token0Address: bclient.WETHTokenAddress.String(), Token1Address: bclient.DAITokenAddress.String()},
 		},
 		Database: Database{
 			Type:           "sqlite",

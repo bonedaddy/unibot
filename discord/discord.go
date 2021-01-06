@@ -28,23 +28,25 @@ type Client struct {
 // NewClient provides a wrapper around discordgo
 func NewClient(ctx context.Context, cfg *Config, bc *bclient.Client, db *db.Database) (*Client, error) {
 	wg := &sync.WaitGroup{}
-	ctx, cancel := context.WithCancel(ctx)
 
-	dg, err := discordgo.New("Bot " + cfg.MainDiscordToken)
-	if err != nil {
-		cancel()
-		return nil, err
+	for _, watcher := range cfg.Watchers {
+		wg.Add(1)
+		go func(discToken, token0, token1 string) {
+			defer wg.Done()
+			dg, err := discordgo.New("Bot " + discToken)
+			if err != nil {
+				log.Println("failed to start watcher: ", err)
+				return
+			}
+
+			if err := dg.Open(); err != nil {
+				log.Println("failed to start watcher: ", err)
+				return
+			}
+		}(watcher.DiscordToken, watcher.Token0Address, watcher.Token1Address)
 	}
 
-	if err := dg.Open(); err != nil {
-		cancel()
-		return nil, err
-	}
-	if err := dg.UpdateListeningStatus("!ndx help"); err != nil {
-		log.Println("failed to udpate streaming status: ", err)
-	}
-
-	client := &Client{s: dg, bc: bc, ctx: ctx, cancel: cancel, wg: wg, db: db}
+	client := &Client{bc: bc, wg: wg, db: db}
 
 	log.Println("bot is now running")
 	return client, nil
@@ -52,7 +54,6 @@ func NewClient(ctx context.Context, cfg *Config, bc *bclient.Client, db *db.Data
 
 // Close terminates the discordgo session
 func (c *Client) Close() error {
-	c.cancel()
 	c.wg.Wait()
 	return c.s.Close()
 }

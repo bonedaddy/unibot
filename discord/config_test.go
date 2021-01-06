@@ -16,7 +16,5 @@ func TestConfig(t *testing.T) {
 	cfg, err := LoadConfig("test-config.yml")
 	require.NoError(t, err)
 	require.Len(t, cfg.Watchers, 1)
-	require.Equal(t, cfg.MainDiscordToken, "CHANGEME-MAIN")
 	require.Equal(t, cfg.Watchers[0].DiscordToken, "CHANGEME-TOKEN")
-	require.Equal(t, cfg.Watchers[0].Currency, "CHANGEME-CURRENCY")
 }
