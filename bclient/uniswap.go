@@ -16,6 +16,15 @@ func (c *Client) EthDaiPrice() (*big.Int, error) {
 	return new(big.Int).Div(reserves.Reserve1, reserves.Reserve0), nil
 }
 
+// GetPrice returns the price of the given assset
+func (c *Client) GetPrice(token0, token1 string) (*big.Int, error) {
+	reserves, err := c.Reserves(token0, token1)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).Div(reserves.Reserve1, reserves.Reserve0), nil
+}
+
 // Reserves returns available reserves in the pair
 func (c *Client) Reserves(token0, token1 string) (*uniswap.Reserve, error) {
 	return c.uc.GetReserves(common.HexToAddress(token0), common.HexToAddress(token1))

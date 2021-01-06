@@ -37,6 +37,7 @@ type Watcher struct {
 	Token0Address string `yaml:"token0_address"`
 	Token1Address string `yaml:"token1_address"`
 	Pair          string `yaml:"pair"`
+	Decimals      int    `yaml:"decimals"`
 }
 
 var (
