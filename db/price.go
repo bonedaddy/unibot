@@ -37,8 +37,8 @@ func (d *Database) GetAllPrices(token0, token1 string) ([]*Price, error) {
 }
 
 // PriceAvgInRange returns the average price of the given asset during the last N days
-func (d *Database) PriceAvgInRange(asset string, windowInDays int) (float64, error) {
-	prices, err := d.windowRangeQuery(asset, windowInDays)
+func (d *Database) PriceAvgInRange(token0, token1 string, windowInDays int) (float64, error) {
+	prices, err := d.windowRangeQuery(token0, token1, windowInDays)
 	if err != nil {
 		return 0, err
 	}
@@ -50,8 +50,8 @@ func (d *Database) PriceAvgInRange(asset string, windowInDays int) (float64, err
 }
 
 // PriceChangeInRange returns the price change percentage in the last N days
-func (d *Database) PriceChangeInRange(asset string, windowInDays int) (float64, error) {
-	prices, err := d.windowRangeQuery(asset, windowInDays)
+func (d *Database) PriceChangeInRange(token0, token1 string, windowInDays int) (float64, error) {
+	prices, err := d.windowRangeQuery(token0, token1, windowInDays)
 	if err != nil {
 		return 0, err
 	}
@@ -69,12 +69,12 @@ func (d *Database) PriceChangeInRange(asset string, windowInDays int) (float64, 
 	return percentChange, nil
 }
 
-func (d *Database) windowRangeQuery(asset string, windowInDays int) ([]*Price, error) {
+func (d *Database) windowRangeQuery(token0, token1 string, windowInDays int) ([]*Price, error) {
 	windowEnd := time.Now()
 	windowStart := windowEnd.AddDate(0, 0, -windowInDays)
 	var prices []*Price
 	return prices, d.db.Model(&Price{}).Where(
-		"type = ? AND created_at BETWEEN ? AND ?",
-		asset, windowStart, windowEnd,
+		"token0 = ? AND token1 = ? AND created_at BETWEEN ? AND ?",
+		token0, token1, windowStart, windowEnd,
 	).Find(&prices).Error
 }
